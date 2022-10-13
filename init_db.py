@@ -1,18 +1,35 @@
 import sqlite3
 
-connection = sqlite3.connect('database.db')
+INSERT_STATEMENT = "INSERT INTO posts (title, content) VALUES (?, ?)"
+TEST_POSTS = [
+    {"title": "First Post", "content": "A short blog post to start the conversation."},
+    {"title": "Second Post", "content": "A second blog post to keep the conversation going."},
+]
 
 
-with open('schema.sql') as f:
-    connection.executescript(f.read())
+def setup_db():
+    """A simple function to set up the database and populate it with sample posts.
 
-cur = connection.cursor()
+    Utilizes the `INSERT_STATEMENT` and `TEST_POSTS` constants.
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('First Post', 'Content for the first post'))
+    Run with `python init_db.py`
+    """
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('Second Post', 'Content for the second post'))
+    global INSERT_STATEMENT, TEST_POSTS
 
-connection.commit()
-connection.close()
+    conn = sqlite3.connect('database.db')
+
+    with open('schema.sql') as f:
+        conn.executescript(f.read())
+
+    cur = conn.cursor()
+
+    for post in TEST_POSTS:
+        cur.execute(INSERT_STATEMENT, (post["title"], post["content"]))
+
+    conn.commit()
+    conn.close()
+
+
+if __name__ == '__main__':
+    setup_db()
