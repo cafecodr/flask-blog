@@ -4,3 +4,17 @@ h1 {
   text-align: center;
   padding: 10px;
 }
+
+.post-card {
+  border: 2px #eee solid;
+  padding: 10px 15px 25px 15px;
+}
+
+.post-card h2,
+.post-card a {
+  color: brown;
+}
+
+.post-card a:visited {
+  color: lightcoral;
+}
